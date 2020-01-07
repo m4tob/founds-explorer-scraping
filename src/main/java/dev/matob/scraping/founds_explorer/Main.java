@@ -47,7 +47,7 @@ public class Main {
 		driver.findD(By.id("stock-price"));
 		driver.findE(By.className("price"));
 		String valorCota = driver.getText().replace("R$ ", "");
-		valorCota = !"N/A".equals(valorCota) ? valorCota.replace(".", "") : "";
+		valorCota = !"N/A".equals(valorCota) ? valorCota.replace(".", "") : "0";
 
 		driver.findD(By.id("main-indicators"));
 		driver.findAllE(By.className("carousel-cell"));
@@ -60,13 +60,17 @@ public class Main {
 			value = driver.getText();
 
 			if ("Liquidez Diária".equals(label))
-				negociacoes = !"N/A".equals(value) ? value.replace(".", "") : "";
+				negociacoes = !"N/A".equals(value) ? value.replace(".", "") : "0";
 			else if ("Último Rendimento".equals(label))
-				dividendo = !"N/A".equals(value) ? value.replace("R$ ", "") : "";
-			else if ("Patrimônio Líquido".equals(label))
-				valorPatr = !"N/A".equals(value) ? value.replace("R$ ", "").replace(" mi", "000000").replace(" bi", "000000000") : "";
-			else if ("Rentab. no mês".equals(label))
-				rentMensal = !"N/A".equals(value) ? value : "";
+				dividendo = !"N/A".equals(value) ? value.replace("R$ ", "") : "0";
+			else if ("Patrimônio Líquido".equals(label)) {
+				valorPatr = !"N/A".equals(value) ? value.replace("R$ ", "") : "0";
+				if (valorPatr.endsWith("mi"))
+					valorPatr = String.format("%.2f", (Double.parseDouble(valorPatr.replace(",", ".").replace(" mi", "")) * 1000000));
+				if (valorPatr.endsWith("bi"))
+					valorPatr = String.format("%.2f", (Double.parseDouble(valorPatr.replace(",", ".").replace(" bi", "")) * 1000000000));
+			} else if ("Rentab. no mês".equals(label))
+				rentMensal = !"N/A".equals(value) ? value : "0";
 		}
 
 		driver.findD(By.id("basic-infos"));
@@ -77,6 +81,7 @@ public class Main {
 			if ("SEGMENTO".equals(driver.getText())) {
 				driver.findE(e, By.className("description"));
 				segmento = driver.getText();
+				segmento = !"N/A".equals(segmento) ? segmento : "-";
 			}
 		}
 
@@ -97,6 +102,6 @@ public class Main {
 				dy12 = Double.parseDouble(values.get(x).getText().replace("%", "").replace(",", ".")) / 12;
 		}
 
-		return String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%.4f\t%.4f\t%.4f", codigo, segmento, negociacoes, valorCota, dividendo, valorPatr, rentMensal, dy1, dy3, dy6, dy12);
+		return String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%.4f\t%.4f\t%.4f", codigo, segmento, valorPatr, negociacoes, valorCota, dividendo, rentMensal, dy1, dy3, dy6, dy12);
 	}
 }
