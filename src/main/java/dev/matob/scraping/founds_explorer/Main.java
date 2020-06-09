@@ -2,6 +2,7 @@ package dev.matob.scraping.founds_explorer;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -97,17 +98,17 @@ public class Main {
 		List<WebElement> dyValues = driver.getElements(2).findElements(By.tagName("td"));
 		for (int x = 0; x < labels.size() && x < dyValues.size(); x++) {
 			if ("Último".equals(labels.get(x).getText())) {
-				pr1 = Double.parseDouble(prValues.get(x).getText().replace("R$ ", "").replace(",", "."));
-				dy1 = Double.parseDouble(dyValues.get(x).getText().replace("%", "").replace(",", "."));
+				pr1 = Double.parseDouble(prValues.get(x).getText().replace("R$ ", "").replace(".", "").replace(",", "."));
+				dy1 = Double.parseDouble(dyValues.get(x).getText().replace("%", "").replace(".", "").replace(",", "."));
 			} else if ("3 meses".equals(labels.get(x).getText())) {
-				pr3 = Double.parseDouble(prValues.get(x).getText().replace("R$ ", "").replace(",", "."));
-				dy3 = Double.parseDouble(dyValues.get(x).getText().replace("%", "").replace(",", ".")) / 3;
+				pr3 = Double.parseDouble(prValues.get(x).getText().replace("R$ ", "").replace(".", "").replace(",", "."));
+				dy3 = Double.parseDouble(dyValues.get(x).getText().replace("%", "").replace(".", "").replace(",", ".")) / 3;
 			} else if ("6 meses".equals(labels.get(x).getText())) {
-				pr6 = Double.parseDouble(prValues.get(x).getText().replace("R$ ", "").replace(",", "."));
-				dy6 = Double.parseDouble(dyValues.get(x).getText().replace("%", "").replace(",", ".")) / 6;
+				pr6 = Double.parseDouble(prValues.get(x).getText().replace("R$ ", "").replace(".", "").replace(",", "."));
+				dy6 = Double.parseDouble(dyValues.get(x).getText().replace("%", "").replace(".", "").replace(",", ".")) / 6;
 			} else if ("12 meses".equals(labels.get(x).getText())) {
-				pr12 = Double.parseDouble(prValues.get(x).getText().replace("R$ ", "").replace(",", "."));
-				dy12 = Double.parseDouble(dyValues.get(x).getText().replace("%", "").replace(",", ".")) / 12;
+				pr12 = Double.parseDouble(prValues.get(x).getText().replace("R$ ", "").replace(".", "").replace(",", "."));
+				dy12 = Double.parseDouble(dyValues.get(x).getText().replace("%", "").replace(".", "").replace(",", ".")) / 12;
 			}
 		}
 

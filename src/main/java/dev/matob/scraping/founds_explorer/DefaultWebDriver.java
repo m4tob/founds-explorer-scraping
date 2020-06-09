@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -48,6 +49,12 @@ public class DefaultWebDriver implements WebDriver, Closeable {
 			ChromeOptions options = new ChromeOptions();
 			if (headless)
 				options.addArguments("--headless");
+			Map<String, Object> prefs = new HashMap<String, Object>();
+			prefs.put("profile.managed_default_content_settings.images", 2);
+			prefs.put("profile.managed_default_content_settings.stylesheets", 2);
+			prefs.put("profile.managed_default_content_settings.geolocation", 2);
+			prefs.put("profile.managed_default_content_settings.media_stream", 2);
+			options.setExperimentalOption("prefs", prefs);
 			driver = new ChromeDriver(options);
 		}
 	}
